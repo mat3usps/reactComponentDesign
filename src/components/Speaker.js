@@ -23,7 +23,18 @@ function SpeakerImage({ id, first, last }) {
     );
 }
 
-function SpeakerDemographics({ bio, first, last, twitterHandle, company }) {
+function SpeakerFavorite({ favorite, onFavoriteToogle }) {
+    return (
+        <div className="action padB1">
+            <span onClick={onFavoriteToogle}>
+                <i className={favorite ? "fa fa-star orange" : "fa fa-star-o orange"} />
+                {"  "}Favorite {"  "}
+            </span>
+        </div>
+    );
+}
+
+function SpeakerDemographics({ onFavoriteToogle, favorite, bio, first, last, twitterHandle, company }) {
     return (
         <div className="speaker-info">
             <div className="d-flex justify-content-between mb-3">
@@ -31,6 +42,7 @@ function SpeakerDemographics({ bio, first, last, twitterHandle, company }) {
                     {first} {last}
                 </h3>
             </div>
+            <SpeakerFavorite favorite={favorite} onFavoriteToogle={onFavoriteToogle} />
             <div>
                 <p className="card-description">{bio}</p>
                 <div className="social d-flex flex-row mt-4">
@@ -48,15 +60,15 @@ function SpeakerDemographics({ bio, first, last, twitterHandle, company }) {
     );
 }
 
-export default function Speaker({ speaker }) {
+export default function Speaker({ speaker, showSessions, onFavoriteToogle }) {
     const { id, first, last, sessions } = speaker;
     return (
         <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-sm-12 col-xs-12">
             <div className="card card-height p-4 mt-4" style={{ height: "50 0px" }}>
                 <SpeakerImage id={id} first={first} last={last} />
-                <SpeakerDemographics {...speaker} />
+                <SpeakerDemographics {...speaker} onFavoriteToogle={onFavoriteToogle} />
             </div>
-            <Sessions sessions={sessions} />
+            {showSessions ? <Sessions sessions={sessions} /> : <></>}
         </div>
     );
 }
